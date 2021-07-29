@@ -1,4 +1,4 @@
-package com.hw.config;
+package com.hw.baseTest.config;
 
 import org.springframework.context.annotation.Configuration;
 

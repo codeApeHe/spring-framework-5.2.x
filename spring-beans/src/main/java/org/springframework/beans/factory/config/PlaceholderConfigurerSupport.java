@@ -24,6 +24,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.StringValueResolver;
 
 /**
+ * spring 提供的一个工具类， 用于解析bean定义属性值里面的占位符，此类不能被直接实例化使用
+ *
  * Abstract base class for property resource configurers that resolve placeholders
  * in bean definition property values. Implementations <em>pull</em> values from a
  * properties file or other {@linkplain org.springframework.core.env.PropertySource
@@ -80,14 +82,9 @@ import org.springframework.util.StringValueResolver;
  *   <property name="url" value="jdbc:${dbname:defaultdb}"/>
  * </pre>
  *
- * @author Chris Beams
- * @author Juergen Hoeller
- * @since 3.1
- * @see PropertyPlaceholderConfigurer
- * @see org.springframework.context.support.PropertySourcesPlaceholderConfigurer
  */
 public abstract class PlaceholderConfigurerSupport extends PropertyResourceConfigurer
-		implements BeanNameAware, BeanFactoryAware {
+														implements BeanNameAware, BeanFactoryAware {
 
 	/** Default placeholder prefix: {@value}. */
 	public static final String DEFAULT_PLACEHOLDER_PREFIX = "${";

@@ -1,4 +1,4 @@
-package com.hw.model;
+package com.hw.baseTest.model;
 
 import java.util.Date;
 
@@ -10,6 +10,7 @@ public class User {
 	private String username;
 	private Integer age;
 	private Date birthday;
+	private Account account;
 
 	public String getUsername() {
 		return username;
@@ -33,5 +34,13 @@ public class User {
 
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
+	}
+
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 }

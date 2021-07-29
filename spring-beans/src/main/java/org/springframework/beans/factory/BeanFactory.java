@@ -95,65 +95,19 @@ import org.springframework.lang.Nullable;
  * <li>a custom destroy-method definition
  * </ol>
  *
- * @author Rod Johnson
- * @author Juergen Hoeller
- * @author Chris Beams
- * @since 13 April 2001
- * @see BeanNameAware#setBeanName
- * @see BeanClassLoaderAware#setBeanClassLoader
- * @see BeanFactoryAware#setBeanFactory
- * @see org.springframework.context.ResourceLoaderAware#setResourceLoader
- * @see org.springframework.context.ApplicationEventPublisherAware#setApplicationEventPublisher
- * @see org.springframework.context.MessageSourceAware#setMessageSource
- * @see org.springframework.context.ApplicationContextAware#setApplicationContext
- * @see org.springframework.web.context.ServletContextAware#setServletContext
- * @see org.springframework.beans.factory.config.BeanPostProcessor#postProcessBeforeInitialization
- * @see InitializingBean#afterPropertiesSet
- * @see org.springframework.beans.factory.support.RootBeanDefinition#getInitMethodName
- * @see org.springframework.beans.factory.config.BeanPostProcessor#postProcessAfterInitialization
- * @see DisposableBean#destroy
- * @see org.springframework.beans.factory.support.RootBeanDefinition#getDestroyMethodName
  */
 public interface BeanFactory {
 
-	/**
-	 * Used to dereference a {@link FactoryBean} instance and distinguish it from
-	 * beans <i>created</i> by the FactoryBean. For example, if the bean named
-	 * {@code myJndiObject} is a FactoryBean, getting {@code &myJndiObject}
-	 * will return the factory, not the instance returned by the factory.
-	 */
+	//用于将 创建FactoryBean实例 与 FactoryBean创建的bean 区分开来。
+	//例如，getBean("&myFactoryBean")返回工厂; getBean("myFactoryBean") 工厂返回的势力
+	// @see	MyFactoryBeanTest
 	String FACTORY_BEAN_PREFIX = "&";
 
 
-	/**
-	 * Return an instance, which may be shared or independent, of the specified bean.
-	 * <p>This method allows a Spring BeanFactory to be used as a replacement for the
-	 * Singleton or Prototype design pattern. Callers may retain references to
-	 * returned objects in the case of Singleton beans.
-	 * <p>Translates aliases back to the corresponding canonical bean name.
-	 * <p>Will ask the parent factory if the bean cannot be found in this factory instance.
-	 * @param name the name of the bean to retrieve
-	 * @return an instance of the bean
-	 * @throws NoSuchBeanDefinitionException if there is no bean with the specified name
-	 * @throws BeansException if the bean could not be obtained
-	 */
+	// 返回指定bean name的一个实例，该实例可以是共享的，也可以是独立的。
 	Object getBean(String name) throws BeansException;
 
-	/**
-	 * Return an instance, which may be shared or independent, of the specified bean.
-	 * <p>Behaves the same as {@link #getBean(String)}, but provides a measure of type
-	 * safety by throwing a BeanNotOfRequiredTypeException if the bean is not of the
-	 * required type. This means that ClassCastException can't be thrown on casting
-	 * the result correctly, as can happen with {@link #getBean(String)}.
-	 * <p>Translates aliases back to the corresponding canonical bean name.
-	 * <p>Will ask the parent factory if the bean cannot be found in this factory instance.
-	 * @param name the name of the bean to retrieve
-	 * @param requiredType type the bean must match; can be an interface or superclass
-	 * @return an instance of the bean
-	 * @throws NoSuchBeanDefinitionException if there is no such bean definition
-	 * @throws BeanNotOfRequiredTypeException if the bean is not of the required type
-	 * @throws BeansException if the bean could not be created
-	 */
+	// 返回指定bean name的一个实例, 并且指定bean的class
 	<T> T getBean(String name, Class<T> requiredType) throws BeansException;
 
 	/**
@@ -172,20 +126,6 @@ public interface BeanFactory {
 	 */
 	Object getBean(String name, Object... args) throws BeansException;
 
-	/**
-	 * Return the bean instance that uniquely matches the given object type, if any.
-	 * <p>This method goes into {@link ListableBeanFactory} by-type lookup territory
-	 * but may also be translated into a conventional by-name lookup based on the name
-	 * of the given type. For more extensive retrieval operations across sets of beans,
-	 * use {@link ListableBeanFactory} and/or {@link BeanFactoryUtils}.
-	 * @param requiredType type the bean must match; can be an interface or superclass
-	 * @return an instance of the single bean matching the required type
-	 * @throws NoSuchBeanDefinitionException if no bean of the given type was found
-	 * @throws NoUniqueBeanDefinitionException if more than one bean of the given type was found
-	 * @throws BeansException if the bean could not be created
-	 * @since 3.0
-	 * @see ListableBeanFactory
-	 */
 	<T> T getBean(Class<T> requiredType) throws BeansException;
 
 	/**

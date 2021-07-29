@@ -526,17 +526,14 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				if (!isFactoryDereference) {
 					Class<?> type = getTypeForFactoryBean((FactoryBean<?>) beanInstance);
 					return (type != null && typeToMatch.isAssignableFrom(type));
-				}
-				else {
+				} else {
 					return typeToMatch.isInstance(beanInstance);
 				}
-			}
-			else if (!isFactoryDereference) {
+			} else if (!isFactoryDereference) {
 				if (typeToMatch.isInstance(beanInstance)) {
 					// Direct match for exposed instance?
 					return true;
-				}
-				else if (typeToMatch.hasGenerics() && containsBeanDefinition(beanName)) {
+				} else if (typeToMatch.hasGenerics() && containsBeanDefinition(beanName)) {
 					// Generics potentially only match on the target class, not on the proxy...
 					RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
 					Class<?> targetType = mbd.getTargetType();
@@ -558,8 +555,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				}
 			}
 			return false;
-		}
-		else if (containsSingleton(beanName) && !containsBeanDefinition(beanName)) {
+		} else if (containsSingleton(beanName) && !containsBeanDefinition(beanName)) {
 			// null instance registered
 			return false;
 		}
@@ -675,8 +671,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		if (beanInstance != null && beanInstance.getClass() != NullBean.class) {
 			if (beanInstance instanceof FactoryBean && !BeanFactoryUtils.isFactoryDereference(name)) {
 				return getTypeForFactoryBean((FactoryBean<?>) beanInstance);
-			}
-			else {
+			} else {
 				return beanInstance.getClass();
 			}
 		}
@@ -708,12 +703,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			if (!BeanFactoryUtils.isFactoryDereference(name)) {
 				// If it's a FactoryBean, we want to look at what it creates, not at the factory class.
 				return getTypeForFactoryBean(beanName, mbd, allowFactoryBeanInit).resolve();
-			}
-			else {
+			} else {
 				return beanClass;
 			}
-		}
-		else {
+		} else {
 			return (!BeanFactoryUtils.isFactoryDereference(name) ? beanClass : null);
 		}
 	}
@@ -886,8 +879,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		TypeConverter customConverter = getCustomTypeConverter();
 		if (customConverter != null) {
 			return customConverter;
-		}
-		else {
+		} else {
 			// Build default TypeConverter, registering custom editors.
 			SimpleTypeConverter typeConverter = new SimpleTypeConverter();
 			typeConverter.setConversionService(getConversionService());

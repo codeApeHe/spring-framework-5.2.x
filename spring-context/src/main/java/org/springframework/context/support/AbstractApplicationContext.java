@@ -516,10 +516,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	@Override
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
-			// Prepare this context for refreshing.
+			// 刷新容器前的准备工作准，记录下容器的启动时间、标记“已启动”状态、处理配置文件中的占位符
 			prepareRefresh();
 
-			// Tell the subclass to refresh the internal bean factory.
+			// DefaultListableBeanFactory implements ConfigurableListableBeanFactory
+			// 这步比较关键，这步完成后，配置文件就会解析成一个个 BeanDefinition，注册到 BeanFactory 中，
+			// 当然，这里 Bean 还没有实例化，只是 bean 的定义信息保存到 beanDefinition 的 map，
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
@@ -529,7 +531,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				// Allows post-processing of the bean factory in context subclasses.
 				postProcessBeanFactory(beanFactory);
 
-				// Invoke factory processors registered as beans in the context.
+				// 执行beanFactory的postProcessor
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
@@ -541,16 +543,17 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				// Initialize event multicaster for this context.
 				initApplicationEventMulticaster();
 
-				// Initialize other special beans in specific context subclasses.
+				// 留给子类实现，来初始化一些其他的bean
 				onRefresh();
 
 				// Check for listener beans and register them.
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
+				// 实例化剩下非懒加载的单例bean
 				finishBeanFactoryInitialization(beanFactory);
 
-				// Last step: publish corresponding event.
+				// 最后一步，发布相关事件
 				finishRefresh();
 			}
 
@@ -598,6 +601,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 
 		// Initialize any placeholder property sources in the context environment.
+		// 空方法、留给子类实现
 		initPropertySources();
 
 		// Validate that all properties marked as required are resolvable:
@@ -607,8 +611,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// Store pre-refresh ApplicationListeners...
 		if (this.earlyApplicationListeners == null) {
 			this.earlyApplicationListeners = new LinkedHashSet<>(this.applicationListeners);
-		}
-		else {
+		} else {
 			// Reset local application listeners to pre-refresh state.
 			this.applicationListeners.clear();
 			this.applicationListeners.addAll(this.earlyApplicationListeners);
@@ -635,7 +638,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * @see #getBeanFactory()
 	 */
 	protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
+		// 创建beanFactory
 		refreshBeanFactory();
+		// 获取beanFactory
 		return getBeanFactory();
 	}
 
@@ -876,6 +881,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.freezeConfiguration();
 
 		// Instantiate all remaining (non-lazy-init) singletons.
+		// 初始化剩下的单例bean对象
 		beanFactory.preInstantiateSingletons();
 	}
 
