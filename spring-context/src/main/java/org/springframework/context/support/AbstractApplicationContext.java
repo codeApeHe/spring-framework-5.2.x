@@ -227,6 +227,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * Create a new AbstractApplicationContext with no parent.
 	 */
 	public AbstractApplicationContext() {
+		/**
+		 * 创建resourcePatternResolver
+		 * @see PathMatchingResourcePatternResolver 用于加载资源
+		 */
 		this.resourcePatternResolver = getResourcePatternResolver();
 	}
 
@@ -516,7 +520,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	@Override
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
-			// 刷新容器前的准备工作准，记录下容器的启动时间、标记“已启动”状态、处理配置文件中的占位符
+			// 刷新容器前的准备工作准，记录下容器的启动时间、标记“已启动”状态、验证一些资源文件是否加入环境
 			prepareRefresh();
 
 			// DefaultListableBeanFactory implements ConfigurableListableBeanFactory
@@ -586,7 +590,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * active flag as well as performing any initialization of property sources.
 	 */
 	protected void prepareRefresh() {
-		// Switch to active.
+		// 设置启动时间以及激活标记
 		this.startupDate = System.currentTimeMillis();
 		this.closed.set(false);
 		this.active.set(true);
@@ -604,10 +608,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// 空方法、留给子类实现
 		initPropertySources();
 
+		// 验证需要的属性文件是否加入到环境中
 		// Validate that all properties marked as required are resolvable:
 		// see ConfigurablePropertyResolver#setRequiredProperties
 		getEnvironment().validateRequiredProperties();
 
+		// 初始化一些属性
 		// Store pre-refresh ApplicationListeners...
 		if (this.earlyApplicationListeners == null) {
 			this.earlyApplicationListeners = new LinkedHashSet<>(this.applicationListeners);

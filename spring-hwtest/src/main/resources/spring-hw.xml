@@ -13,5 +13,4 @@
 		<property name="account" ref="account"/>
 		<property name="age" value="18"/>
 	</bean>
-
 </beans>
