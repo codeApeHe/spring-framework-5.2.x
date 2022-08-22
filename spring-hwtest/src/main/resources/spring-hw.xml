@@ -13,4 +13,8 @@
 		<property name="account" ref="account"/>
 		<property name="age" value="18"/>
 	</bean>
+	<bean id="myBeanFactoryPostProcessor" class="com.hw.beanfactorypostprocessortest.MyBeanFactoryPostProcessor"></bean>
+	<bean id="myOrderedBeanFactoryPostProcessor" class="com.hw.beanfactorypostprocessortest.MyOrderedBeanFactoryPostProcessor"/>
+	<bean id="myOrdered1BeanFactoryPostProcessor" class="com.hw.beanfactorypostprocessortest.MyOrdered1BeanFactoryPostProcessor"/>
+	<bean id="myBeanPostProcessor" class="com.hw.beanpostprocessortest.MyBeanPostProcessor"/>
 </beans>
